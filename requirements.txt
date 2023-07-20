@@ -6,4 +6,7 @@ pydantic
 python-multipart
 pyjwt==2.7.0
 mangum
+sqlalchemy
+python-dotenv
+mysql-connector-python
 # mysqlclient  # Activate only in docker
