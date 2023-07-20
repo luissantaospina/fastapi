@@ -3,6 +3,7 @@ from .models import database, User, Movie, UserReview
 from .routers import user_router, movie_router, user_review_router, auth_router
 from .middlewares import ErrorHandler
 from fastapi.middleware.cors import CORSMiddleware
+from mangum import Mangum
 
 app = FastAPI()
 app.title = "My first API"
@@ -23,6 +24,8 @@ api_v1.include_router(user_review_router)
 api_v1.include_router(movie_router)
 api_v1.include_router(auth_router)
 app.include_router(api_v1)
+
+handler = Mangum(app)
 
 
 @app.on_event('startup')
