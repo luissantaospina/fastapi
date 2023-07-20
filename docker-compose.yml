@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    restart: on-failure
+    ports:
+      - '8000:8000'
+    volumes:
+      - .:/app_fast
+    networks:
+      private-net:
+        aliases:
+          - local.fast-api
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: mariadb:10.5
+    restart: on-failure
+    environment:
+      MYSQL_ROOT_PASSWORD: pas
+      MYSQL_DATABASE: product-fast
+      MYSQL_USER: user
+      MYSQL_PASSWORD: pas
+    build:
+      context: ./database
+    volumes:
+      - ./database/init:/docker-entrypoint-initdb.d
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: [ "CMD", "service","mariadb","status" ]
+      interval: 5s
+      timeout: 10s
+      retries: 5
+    networks:
+      private-net:
+        aliases:
+          - local.fast-db
+
+networks:
+  private-net:
+    external: true

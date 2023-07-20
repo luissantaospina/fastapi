@@ -1,0 +1,8 @@
+fastapi==0.98.0
+uvicorn[standard]
+peewee
+python-dotenv
+pydantic
+python-multipart
+pyjwt==2.7.0
+mysqlclient  # Activate only in docker
