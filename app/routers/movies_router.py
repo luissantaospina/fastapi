@@ -5,12 +5,11 @@ from fastapi import APIRouter, Depends, Path, HTTPException, status
 from ..helpers import oauth_schema
 from ..services import MovieService
 from ..repositories import MovieRepository
-from ..database import get_db
 
 router = APIRouter(
     prefix='/movies',
     tags=["movies"],
-    dependencies=[Depends(oauth_schema), Depends(get_db)]
+    dependencies=[Depends(oauth_schema)]
 )
 
 

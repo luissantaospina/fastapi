@@ -1,3 +1,3 @@
-from .movies import *
-from .user_reviews import *
-from .users import *
+from .movies_service import *
+from .reviews_service import *
+from .users_service import *

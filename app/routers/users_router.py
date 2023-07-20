@@ -3,13 +3,19 @@ from ..schemas import UserRequestModel, UserResponseModel
 from fastapi import APIRouter, HTTPException
 from fastapi.security import HTTPBasicCredentials
 from ..services import UserService
+from ..database import get_db_session
+from fastapi import Depends
+from sqlalchemy.orm import Session
 
-router = APIRouter(prefix='/users', tags=["users"])
+router = APIRouter(
+    prefix='/users',
+    tags=["users"]
+)
 
 
 @router.post("", response_model=UserResponseModel)
-async def create_user(user: UserRequestModel) -> UserResponseModel:
-    user_created = UserService.create_user(user)
+async def create_user(user: UserRequestModel, db: Session = Depends(get_db_session)) -> UserResponseModel:
+    user_created = UserService.create_user(user, db)
     return user_created
 
 

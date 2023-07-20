@@ -4,9 +4,9 @@ peewee
 python-dotenv
 pydantic
 python-multipart
-pyjwt==2.7.0
+pyjwt==2.8.0
 mangum
 sqlalchemy
-python-dotenv
 mysql-connector-python
+alembic
 # mysqlclient  # Activate only in docker

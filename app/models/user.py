@@ -1,20 +1,23 @@
-from peewee import Model, CharField, DateTimeField
+from sqlalchemy import Column, Integer, String, DateTime
+from sqlalchemy.orm import relationship
 from datetime import datetime
-from .database import database
+from sqlalchemy.ext.declarative import declarative_base
 import hashlib
 
+Base = declarative_base()
 
-class User(Model):
-    username = CharField(max_length=50, unique=True)
-    password = CharField(max_length=50)
-    created_at = DateTimeField(default=datetime.now)
+
+class User(Base):
+    __tablename__ = 'users'
+
+    id = Column(Integer, primary_key=True, index=True)
+    username = Column(String(50), unique=True, nullable=False)
+    password = Column(String(50), nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
 
     def __str__(self):
         return self.username
-
-    class Meta:
-        database = database
-        table_name = 'users'
 
     @classmethod
     def create_password(cls, password: str) -> str:
@@ -25,7 +28,7 @@ class User(Model):
     @classmethod
     def authenticate(cls, username: str, password: str):
         password = User.create_password(password)
-        user = cls.select()\
+        user = cls.select() \
             .where(User.username == username) \
             .where(User.password == password) \
             .first()
