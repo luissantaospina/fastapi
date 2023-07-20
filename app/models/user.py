@@ -16,6 +16,8 @@ class User(Base):
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
 
+    reviews = relationship('Review')
+
     def __str__(self):
         return self.username
 

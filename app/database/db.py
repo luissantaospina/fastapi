@@ -1,5 +1,6 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.ext.declarative import declarative_base
 from os import getenv
 from dotenv import load_dotenv
 from ..models import User
@@ -17,6 +18,7 @@ DATABASE_URL = 'mysql+mysqlconnector://{user}:{pss}@{host}:{port}/{db}'.format(
 )
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+Base = declarative_base()
 
 
 def get_db_session():
@@ -25,15 +27,3 @@ def get_db_session():
         yield db
     finally:
         db.close()
-
-
-models = [
-    User,
-    Movie,
-    Review
-]
-
-
-def create_all_tables():
-    for model in models:
-        model.metadata.create_all(bind=engine)

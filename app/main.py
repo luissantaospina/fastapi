@@ -3,10 +3,6 @@ from .routers import user_router, movie_router, user_review_router, auth_router
 from .middlewares import ErrorHandler
 from fastapi.middleware.cors import CORSMiddleware
 from mangum import Mangum
-from .database import create_all_tables
-
-
-create_all_tables()
 
 app = FastAPI()
 app.title = "My first API"
