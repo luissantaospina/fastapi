@@ -1,10 +1,11 @@
 import functools
 from typing import List
+
+from ..repositories.movies.impl import MovieRepositoryImpl
 from ..schemas import MovieRequestModel, MovieResponseModel
 from fastapi import APIRouter, Depends, Path, HTTPException, status
 from ..helpers import oauth_schema
 from ..services import MovieService
-from ..repositories import MovieRepository
 
 router = APIRouter(
     prefix='/movies',
@@ -16,7 +17,7 @@ router = APIRouter(
 def validate_movie(function):
     @functools.wraps(function)
     def wrapper(movie_id: int, *args):
-        movie = MovieRepository.get(movie_id)
+        movie = MovieRepositoryImpl().get(movie_id)
         if not movie:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Movie not found')
 

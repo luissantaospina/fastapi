@@ -5,6 +5,7 @@ from fastapi.security import OAuth2PasswordBearer
 from ..models.user import User
 from os import getenv
 from dotenv import load_dotenv
+from ..repositories.users.impl import UserRepositoryImpl
 
 load_dotenv()
 oauth_schema = OAuth2PasswordBearer(tokenUrl='/api/v1/auth')
@@ -28,5 +29,6 @@ def decode_token(token: str = Depends(oauth_schema)):
 
 
 def get_current_user(token: str = Depends(oauth_schema)) -> User:
-    data = decode_token(token)
-    return User.select().where(User.id == data['user_id']).first()
+    _data = decode_token(token)
+    _user = UserRepositoryImpl().get(_data['user_id'])
+    return _user

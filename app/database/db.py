@@ -3,9 +3,6 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from os import getenv
 from dotenv import load_dotenv
-from ..models import User
-from ..models import Review
-from ..models import Movie
 
 load_dotenv()
 
