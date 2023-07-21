@@ -1,8 +1,6 @@
 from sqlalchemy import Column, Integer, String, DateTime
-from sqlalchemy.orm import relationship
 from datetime import datetime
 from sqlalchemy.ext.declarative import declarative_base
-import hashlib
 
 Base = declarative_base()
 
@@ -18,25 +16,3 @@ class User(Base):
 
     def __str__(self):
         return self.username
-
-    # @classmethod
-    # def create_password(cls, password: str) -> str:
-    #     hash_lib = hashlib.md5()
-    #     hash_lib.update(password.encode('utf-8'))
-    #     return hash_lib.hexdigest()
-    #
-    # @classmethod
-    # def authenticate(cls, username: str, password: str):
-    #     password = User.create_password(password)
-    #     user = cls.select() \
-    #         .where(User.username == username) \
-    #         .where(User.password == password) \
-    #         .first()
-    #
-    #     if user:
-    #         return user
-
-        # _user = UserService.get_user_by_credentials(username, password)
-        #
-        # if _user:
-        #     return _user
