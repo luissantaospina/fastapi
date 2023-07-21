@@ -1,3 +1,3 @@
-from .movie import *
-from .user import *
-from .review import *
+from .movie_schema import *
+from .user_schema import *
+from .review_schema import *

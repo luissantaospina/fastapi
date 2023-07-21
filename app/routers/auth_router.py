@@ -1,12 +1,24 @@
 from fastapi import Depends, HTTPException, status
 from ..models import User
-from fastapi.security import OAuth2PasswordRequestForm
-from ..helpers import create_access_token, get_current_user
+from fastapi.security import OAuth2PasswordRequestForm, HTTPBasicCredentials
+from ..helpers import create_access_token, get_current_user, encode_password
 from fastapi import APIRouter
+
+from ..repositories.users.impl import UserRepositoryImpl
 from ..schemas import UserResponseModel
 from ..services import AuthService
 
 router = APIRouter(prefix='/auth', tags=["auth"])
+
+
+@router.post("/login", response_model=UserResponseModel)
+async def login(credentials: HTTPBasicCredentials):
+    _password = encode_password(credentials.password)
+    _user = UserRepositoryImpl().get_by_credentials(credentials.username, _password)
+
+    if not _user:
+        raise HTTPException(status_code=401, detail='Unauthorized')
+    return _user
 
 
 @router.post('')
