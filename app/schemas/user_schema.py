@@ -27,6 +27,7 @@ class UserRequestModel(BaseModel):
 class UserResponseModel(BaseModel):
     id: int
     username: str
+    is_activate: bool
 
     class Config:
         orm_mode = True
