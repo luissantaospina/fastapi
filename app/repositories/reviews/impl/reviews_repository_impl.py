@@ -1,5 +1,5 @@
+from fastapi import HTTPException
 from sqlalchemy.exc import SQLAlchemyError
-
 from ..reviews_repository import ReviewRepository
 from ....models import User, Review
 from typing import List
@@ -23,7 +23,7 @@ class ReviewRepositoryImpl(ReviewRepository):
 
         except SQLAlchemyError as e:
             self.db.rollback()
-            raise
+            raise HTTPException(status_code=500, detail=str(e))
 
         return _review
 
@@ -33,8 +33,7 @@ class ReviewRepositoryImpl(ReviewRepository):
             reviews = self.db.query(Review).offset(offset).limit(limit).all()
 
         except SQLAlchemyError as e:
-            self.db.rollback()
-            raise
+            raise HTTPException(status_code=500, detail=str(e))
 
         return [review for review in reviews]
 
@@ -43,8 +42,7 @@ class ReviewRepositoryImpl(ReviewRepository):
             _review = self.db.query(Review).filter(Review.id == review_id).first()
 
         except SQLAlchemyError as e:
-            self.db.rollback()
-            raise
+            raise HTTPException(status_code=500, detail=str(e))
 
         return _review
 
@@ -58,7 +56,7 @@ class ReviewRepositoryImpl(ReviewRepository):
 
         except SQLAlchemyError as e:
             self.db.rollback()
-            raise
+            raise HTTPException(status_code=500, detail=str(e))
 
         return _review
 
@@ -70,6 +68,6 @@ class ReviewRepositoryImpl(ReviewRepository):
 
         except SQLAlchemyError as e:
             self.db.rollback()
-            raise
+            raise HTTPException(status_code=500, detail=str(e))
 
         return _review

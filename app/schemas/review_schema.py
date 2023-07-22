@@ -42,10 +42,6 @@ class ReviewResponseModel(BaseModel):
         schema_extra = {
             "example": {
                 "id": 1,
-                "movie": {
-                    "id": 1,
-                    "title": "titanic"
-                },
                 "review": "The movie was fine",
                 "score": 4
             }

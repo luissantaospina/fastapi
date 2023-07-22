@@ -1,5 +1,5 @@
 from typing import List
-from fastapi import Path
+from fastapi import Path, HTTPException
 from sqlalchemy.exc import SQLAlchemyError
 from ..movies_repository import MovieRepository
 from ....models import Movie
@@ -18,7 +18,7 @@ class MovieRepositoryImpl(MovieRepository):
 
         except SQLAlchemyError as e:
             self.db.rollback()
-            raise
+            raise HTTPException(status_code=500, detail=str(e))
 
         return _movie
 
@@ -28,8 +28,7 @@ class MovieRepositoryImpl(MovieRepository):
             _movies = self.db.query(Movie).offset(offset).limit(limit).all()
 
         except SQLAlchemyError as e:
-            self.db.rollback()
-            raise
+            raise HTTPException(status_code=500, detail=str(e))
 
         return [movie for movie in _movies]
 
@@ -38,8 +37,7 @@ class MovieRepositoryImpl(MovieRepository):
             _movie = self.db.query(Movie).filter(Movie.id == movie_id).first()
 
         except SQLAlchemyError as e:
-            self.db.rollback()
-            raise
+            raise HTTPException(status_code=500, detail=str(e))
 
         return _movie
 
@@ -51,7 +49,7 @@ class MovieRepositoryImpl(MovieRepository):
 
         except SQLAlchemyError as e:
             self.db.rollback()
-            raise
+            raise HTTPException(status_code=500, detail=str(e))
 
         return _movie
 
@@ -63,6 +61,6 @@ class MovieRepositoryImpl(MovieRepository):
 
         except SQLAlchemyError as e:
             self.db.rollback()
-            raise
+            raise HTTPException(status_code=500, detail=str(e))
 
         return _movie
