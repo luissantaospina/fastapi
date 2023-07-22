@@ -1,5 +1,5 @@
 from typing import List
-from fastapi import Path, HTTPException
+from fastapi import HTTPException, status
 from sqlalchemy.exc import SQLAlchemyError
 from ..movies_repository import MovieRepository
 from ....models import Movie
@@ -9,6 +9,13 @@ from ....schemas import MovieRequestModel, MovieResponseModel
 class MovieRepositoryImpl(MovieRepository):
     def __init__(self):
         super().__init__()
+
+    def validate_movie(self, movie_id: int) -> Movie:
+        _movie = self.db.query(Movie).filter(Movie.id == movie_id).first()
+        if not _movie:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Movie not found')
+
+        return _movie
 
     def create(self, movie: MovieRequestModel) -> MovieResponseModel:
         try:
@@ -32,9 +39,9 @@ class MovieRepositoryImpl(MovieRepository):
 
         return [movie for movie in _movies]
 
-    def get(self, movie_id: int = Path(ge=1)) -> MovieResponseModel:
+    def get(self, movie_id: int) -> MovieResponseModel:
         try:
-            _movie = self.db.query(Movie).filter(Movie.id == movie_id).first()
+            _movie = self.validate_movie(movie_id)
 
         except SQLAlchemyError as e:
             raise HTTPException(status_code=500, detail=str(e))
@@ -43,7 +50,7 @@ class MovieRepositoryImpl(MovieRepository):
 
     def update(self, movie_request: MovieRequestModel, movie_id: int) -> MovieResponseModel:
         try:
-            _movie = self.db.query(Movie).filter(Movie.id == movie_id).first()
+            _movie = self.validate_movie(movie_id)
             _movie.title = movie_request.title
             self.db.commit()
 
@@ -55,7 +62,7 @@ class MovieRepositoryImpl(MovieRepository):
 
     def delete(self, movie_id: int) -> MovieResponseModel:
         try:
-            _movie = self.db.query(Movie).filter(Movie.id == movie_id).first()
+            _movie = self.validate_movie(movie_id)
             self.db.delete(_movie)
             self.db.commit()
 

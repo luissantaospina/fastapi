@@ -1,4 +1,4 @@
-from fastapi import HTTPException
+from fastapi import HTTPException, status
 from sqlalchemy.exc import SQLAlchemyError
 from ..reviews_repository import ReviewRepository
 from ....models import User, Review
@@ -9,6 +9,13 @@ from ....schemas import ReviewRequestModel, ReviewResponseModel, ReviewRequestPu
 class ReviewRepositoryImpl(ReviewRepository):
     def __init__(self):
         super().__init__()
+
+    def validate_review(self, review_id: int) -> Review:
+        _review = self.db.query(Review).filter(Review.id == review_id).first()
+        if not _review:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Review not found')
+
+        return _review
 
     def create(self, review: ReviewRequestModel, user: User) -> ReviewResponseModel:
         try:
@@ -39,7 +46,7 @@ class ReviewRepositoryImpl(ReviewRepository):
 
     def get(self, review_id: int) -> ReviewResponseModel:
         try:
-            _review = self.db.query(Review).filter(Review.id == review_id).first()
+            _review = self.validate_review(review_id)
 
         except SQLAlchemyError as e:
             raise HTTPException(status_code=500, detail=str(e))
@@ -49,7 +56,7 @@ class ReviewRepositoryImpl(ReviewRepository):
     def update(self, review_request: ReviewRequestPutModel, review_id: int) \
             -> ReviewResponseModel:
         try:
-            _review = self.db.query(Review).filter(Review.id == review_id).first()
+            _review = self.validate_review(review_id)
             _review.review = review_request.review
             _review.score = review_request.score
             self.db.commit()
@@ -62,7 +69,7 @@ class ReviewRepositoryImpl(ReviewRepository):
 
     def delete(self, review_id: int) -> ReviewResponseModel:
         try:
-            _review = self.db.query(Review).filter(Review.id == review_id).first()
+            _review = self.validate_review(review_id)
             self.db.delete(_review)
             self.db.commit()
 

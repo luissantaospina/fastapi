@@ -3,7 +3,6 @@ from ..models import User
 from fastapi.security import OAuth2PasswordRequestForm, HTTPBasicCredentials
 from ..helpers import create_access_token, get_current_user, encode_password
 from fastapi import APIRouter
-
 from ..repositories.users.impl import UserRepositoryImpl
 from ..schemas import UserResponseModel
 from ..services import AuthService
