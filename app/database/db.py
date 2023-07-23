@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-DATABASE_URL = 'mysql+mysqlconnector://{user}:{pss}@{host}:{port}/{db}'.format(
+DATABASE_URL = 'postgresql://{user}:{pss}@{host}:{port}/{db}'.format(
     user=getenv("PGSQL_USER"),
     pss=getenv("PGSQL_PASSWORD"),
     host=getenv("PGSQL_HOST"),

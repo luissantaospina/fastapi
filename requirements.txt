@@ -1,12 +1,10 @@
 fastapi==0.98.0
 uvicorn[standard]
-peewee
 python-dotenv
 pydantic
 python-multipart
 pyjwt==2.8.0
 mangum
 sqlalchemy
-mysql-connector-python
 alembic
-# mysqlclient  # Activate only in docker
+psycopg2
