@@ -8,3 +8,4 @@ mangum
 sqlalchemy
 alembic
 psycopg2
+bcrypt

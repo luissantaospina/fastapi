@@ -1,19 +1,18 @@
 from fastapi import HTTPException, status
-from ..helpers import encode_password
 from ..repositories.users.impl import UserRepositoryImpl
 from ..schemas import UserResponseModel
+import bcrypt
 
 
 class AuthService:
-    @staticmethod
-    def authenticate(username: str, password: str) -> UserResponseModel:
-        _password = encode_password(password)
-        _user = UserRepositoryImpl().get_by_credentials(username, _password)
+    def authenticate(self, username: str, password: str) -> UserResponseModel:
+        _user = UserRepositoryImpl().get_by_username(username)
 
-        if not _user:
+        if not _user or not self.verify_password(password, _user.password) or not _user.is_activate:
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Unauthorized')
 
-        if not _user.is_activate:
-            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='User is not active')
-
         return _user
+
+    @staticmethod
+    def verify_password(input_password: str, hashed_password: str) -> bool:
+        return bcrypt.checkpw(input_password.encode('utf-8'), hashed_password.encode('utf-8'))

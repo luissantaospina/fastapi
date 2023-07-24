@@ -54,12 +54,9 @@ class UserRepositoryImpl(UserRepository):
 
         return _user
 
-    def get_by_credentials(self, username: str, password: str) -> UserResponseModel:
+    def get_by_username(self, username: str) -> User:
         try:
-            _user = self.db.query(User)\
-                .filter(User.username == username) \
-                .filter(User.password == password) \
-                .first()
+            _user = self.db.query(User).filter(User.username == username).first()
 
         except SQLAlchemyError as e:
             raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))

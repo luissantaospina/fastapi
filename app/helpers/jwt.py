@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 from ..schemas import UserResponseModel
 
 load_dotenv()
-oauth_schema = OAuth2PasswordBearer(tokenUrl='/api/v1/login')
+oauth_schema = OAuth2PasswordBearer(tokenUrl='/api/v1/auth/login')
 
 
 def create_access_token(user, days=7):

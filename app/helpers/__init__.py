@@ -1,2 +1,2 @@
 from .jwt import *
-from .encode import *
+from .bcrypt import *

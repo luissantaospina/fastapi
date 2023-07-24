@@ -8,9 +8,9 @@ from ..services import AuthService
 router = APIRouter(prefix='/auth', tags=["auth"])
 
 
-@router.post('', response_model=AuthResponseModel)
+@router.post('/login', response_model=AuthResponseModel)
 async def login(data: OAuth2PasswordRequestForm = Depends()):
-    _user = AuthService.authenticate(data.username, data.password)
+    _user = AuthService().authenticate(data.username, data.password)
 
     return {
         'access_token': create_access_token(_user),
