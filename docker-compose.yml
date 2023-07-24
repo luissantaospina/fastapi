@@ -3,7 +3,8 @@ version: '3.8'
 services:
   app:
     build: .
-    restart: on-failure
+    container_name: fastapi
+    restart: always
     ports:
       - '8000:8000'
     volumes:
@@ -13,13 +14,25 @@ services:
         aliases:
           - local.fast-api
     depends_on:
-      - db
+      - postgresql
 
-  db:
-    image: postgres
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin
     restart: always
     environment:
-      - DATABASE_HOST=localhost
+      PGADMIN_DEFAULT_EMAIL: email@example.com
+      PGADMIN_DEFAULT_PASSWORD: password
+    ports:
+      - "80:80"
+    depends_on:
+      - postgresql
+
+  postgresql:
+    image: postgres
+    container_name: postgresql
+    restart: always
+    environment:
       - POSTGRES_USER=docker
       - POSTGRES_PASSWORD=docker
       - POSTGRES_DB=fastapi-docker-postgres
