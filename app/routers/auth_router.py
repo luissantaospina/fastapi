@@ -11,8 +11,7 @@ router = APIRouter(prefix='/auth', tags=["auth"])
 @router.post('', response_model=AuthResponseModel)
 async def login(data: OAuth2PasswordRequestForm = Depends()):
     _user = AuthService.authenticate(data.username, data.password)
-    if not _user:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Unauthorized')
+
     return {
         'access_token': create_access_token(_user),
         'token_type': 'Bearer',

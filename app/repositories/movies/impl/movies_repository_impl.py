@@ -25,7 +25,7 @@ class MovieRepositoryImpl(MovieRepository):
 
         except SQLAlchemyError as e:
             self.db.rollback()
-            raise HTTPException(status_code=500, detail=str(e))
+            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
         return _movie
 
@@ -35,7 +35,7 @@ class MovieRepositoryImpl(MovieRepository):
             _movies = self.db.query(Movie).offset(offset).limit(limit).all()
 
         except SQLAlchemyError as e:
-            raise HTTPException(status_code=500, detail=str(e))
+            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
         return [movie for movie in _movies]
 
@@ -44,7 +44,7 @@ class MovieRepositoryImpl(MovieRepository):
             _movie = self.validate_movie(movie_id)
 
         except SQLAlchemyError as e:
-            raise HTTPException(status_code=500, detail=str(e))
+            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
         return _movie
 
@@ -56,7 +56,7 @@ class MovieRepositoryImpl(MovieRepository):
 
         except SQLAlchemyError as e:
             self.db.rollback()
-            raise HTTPException(status_code=500, detail=str(e))
+            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
         return _movie
 
@@ -68,6 +68,6 @@ class MovieRepositoryImpl(MovieRepository):
 
         except SQLAlchemyError as e:
             self.db.rollback()
-            raise HTTPException(status_code=500, detail=str(e))
+            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
         return _movie

@@ -30,7 +30,7 @@ class ReviewRepositoryImpl(ReviewRepository):
 
         except SQLAlchemyError as e:
             self.db.rollback()
-            raise HTTPException(status_code=500, detail=str(e))
+            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
         return _review
 
@@ -40,7 +40,7 @@ class ReviewRepositoryImpl(ReviewRepository):
             reviews = self.db.query(Review).offset(offset).limit(limit).all()
 
         except SQLAlchemyError as e:
-            raise HTTPException(status_code=500, detail=str(e))
+            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
         return [review for review in reviews]
 
@@ -49,7 +49,7 @@ class ReviewRepositoryImpl(ReviewRepository):
             _review = self.validate_review(review_id)
 
         except SQLAlchemyError as e:
-            raise HTTPException(status_code=500, detail=str(e))
+            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
         return _review
 
@@ -63,7 +63,7 @@ class ReviewRepositoryImpl(ReviewRepository):
 
         except SQLAlchemyError as e:
             self.db.rollback()
-            raise HTTPException(status_code=500, detail=str(e))
+            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
         return _review
 
@@ -75,6 +75,6 @@ class ReviewRepositoryImpl(ReviewRepository):
 
         except SQLAlchemyError as e:
             self.db.rollback()
-            raise HTTPException(status_code=500, detail=str(e))
+            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
         return _review

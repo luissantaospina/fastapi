@@ -31,7 +31,7 @@ class UserRepositoryImpl(UserRepository):
 
         except SQLAlchemyError as e:
             self.db.rollback()
-            raise HTTPException(status_code=500, detail=str(e))
+            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
         return _user
 
@@ -41,7 +41,7 @@ class UserRepositoryImpl(UserRepository):
             _users = self.db.query(User).offset(offset).limit(limit).all()
 
         except SQLAlchemyError as e:
-            raise HTTPException(status_code=500, detail=str(e))
+            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
         return [user for user in _users]
 
@@ -50,7 +50,7 @@ class UserRepositoryImpl(UserRepository):
             _user = self.validate_user(user_id)
 
         except SQLAlchemyError as e:
-            raise HTTPException(status_code=500, detail=str(e))
+            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
         return _user
 
@@ -62,6 +62,6 @@ class UserRepositoryImpl(UserRepository):
                 .first()
 
         except SQLAlchemyError as e:
-            raise HTTPException(status_code=500, detail=str(e))
+            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
         return _user
