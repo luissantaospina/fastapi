@@ -23,5 +23,5 @@ class UserRepository(ABC):
         pass
 
     @abstractmethod
-    def get_by_credentials(self, username: str, password: str) -> UserResponseModel:
+    def get_by_username(self, username: str) -> UserResponseModel:
         pass
