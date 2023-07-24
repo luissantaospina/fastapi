@@ -8,7 +8,7 @@ class AuthService:
     def authenticate(self, username: str, password: str) -> UserResponseModel:
         _user = UserRepositoryImpl().get_by_username(username)
 
-        if not _user or not self.verify_password(password, _user.password) or not _user.is_activate:
+        if not _user or not _user.is_activate or not self.verify_password(password, _user.password):
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Unauthorized')
 
         return _user
