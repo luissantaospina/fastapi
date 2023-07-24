@@ -1,7 +1,7 @@
 from fastapi import Depends, HTTPException, status
 from ..models import User
 from fastapi.security import OAuth2PasswordRequestForm, HTTPBasicCredentials
-from ..helpers import create_access_token, get_current_user, encode_password
+from ..helpers import create_access_token, get_user_by_token, encode_password
 from fastapi import APIRouter
 from ..repositories.users.impl import UserRepositoryImpl
 from ..schemas import UserResponseModel
@@ -29,5 +29,5 @@ async def auth(data: OAuth2PasswordRequestForm = Depends()):
 
 
 @router.get('', response_model=UserResponseModel)
-async def get_user_from_token(user: User = Depends(get_current_user)):
+async def get_user_from_token(user: User = Depends(get_user_by_token)):
     return user

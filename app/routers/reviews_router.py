@@ -5,7 +5,7 @@ from ..schemas import ReviewRequestModel, \
 from fastapi import APIRouter, Depends, Path
 from ..helpers import oauth_schema
 from ..models import User
-from ..helpers import get_current_user
+from ..helpers import get_user_by_token
 from ..services import ReviewService
 
 router = APIRouter(
@@ -16,7 +16,7 @@ router = APIRouter(
 
 
 @router.post("", response_model=ReviewResponseModel)
-async def create_review(review: ReviewRequestModel, user: User = Depends(get_current_user))\
+async def create_review(review: ReviewRequestModel, user: User = Depends(get_user_by_token))\
         -> ReviewResponseModel:
     review_created = ReviewService.create_review(review, user)
     return review_created
