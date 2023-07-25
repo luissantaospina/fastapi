@@ -1,4 +1,5 @@
 from pydantic import BaseModel, validator, Field
+from app.schemas import MovieResponseModel, UserResponseModel
 
 
 class ReviewRequestModel(BaseModel):
@@ -36,6 +37,8 @@ class ReviewResponseModel(BaseModel):
     id: int
     review: str
     score: float
+    movie: MovieResponseModel
+    user: UserResponseModel
 
     class Config:
         orm_mode = True
@@ -43,6 +46,15 @@ class ReviewResponseModel(BaseModel):
             "example": {
                 "id": 1,
                 "review": "The movie was fine",
-                "score": 4
+                "score": 4,
+                "movie": {
+                    "id": 1,
+                    "title": "The movie",
+                },
+                "user": {
+                    "id": 1,
+                    "username": "my user",
+                    "is_active": True
+                }
             }
         }

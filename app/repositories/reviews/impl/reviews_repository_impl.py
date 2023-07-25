@@ -1,7 +1,7 @@
 from fastapi import HTTPException, status
 from sqlalchemy.exc import SQLAlchemyError
 from ..reviews_repository import ReviewRepository
-from ....models import User, Review
+from ....models import User, Review, Movie
 from typing import List
 from ....schemas import ReviewRequestModel, ReviewResponseModel, ReviewRequestPutModel
 
@@ -17,8 +17,14 @@ class ReviewRepositoryImpl(ReviewRepository):
 
         return _review
 
+    def validate_movie(self, movie_id: int) -> None:
+        _movie = self.db.query(Movie).filter(Movie.id == movie_id).first()
+        if not _movie:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Movie not found')
+
     def create(self, review: ReviewRequestModel, user: User) -> ReviewResponseModel:
         try:
+            self.validate_movie(review.movie_id)
             _review = Review(
                 movie_id=review.movie_id,
                 user_id=user.id,
