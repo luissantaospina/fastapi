@@ -17,7 +17,7 @@ async def create_user(user: UserRequestModel) -> UserResponseModel:
 
 
 @router.get("", response_model=List[UserResponseModel])
-async def get_users(page: int = 1, limit: int = 10, ) -> List[UserResponseModel]:
+async def get_users(page: int = 1, limit: int = 10) -> List[UserResponseModel]:
     users = UserService.get_users(page, limit)
     return [user for user in users]
 
