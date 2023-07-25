@@ -1,20 +1,16 @@
-from pydantic import BaseModel
+from pydantic import ConfigDict, BaseModel
 
 
 class MovieRequestModel(BaseModel):
     title: str
-
-    class Config:
-        schema_extra = {
-            "example": {
-                "title": 'Interestelar'
-            }
+    model_config = ConfigDict(json_schema_extra={
+        "example": {
+            "title": 'Interestelar'
         }
+    })
 
 
 class MovieResponseModel(BaseModel):
     id: int
     title: str
-
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)

@@ -1,13 +1,13 @@
 from typing import List
 from ..schemas import MovieRequestModel, MovieResponseModel
 from fastapi import APIRouter, Depends, Path
-from ..helpers import oauth_schema
+from ..helpers import oauth2_scheme
 from ..services import MovieService
 
 router = APIRouter(
     prefix='/movies',
     tags=["movies"],
-    dependencies=[Depends(oauth_schema)]
+    dependencies=[Depends(oauth2_scheme)]
 )
 
 

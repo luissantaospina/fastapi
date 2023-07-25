@@ -1,9 +1,9 @@
-from typing import List
+from typing import List, Annotated
 from ..schemas import ReviewRequestModel, \
     ReviewResponseModel, \
     ReviewRequestPutModel
 from fastapi import APIRouter, Depends, Path
-from ..helpers import oauth_schema
+from ..helpers import oauth2_scheme
 from ..models import User
 from ..helpers import get_user_by_token
 from ..services import ReviewService
@@ -11,12 +11,12 @@ from ..services import ReviewService
 router = APIRouter(
     prefix='/reviews',
     tags=["reviews"],
-    dependencies=[Depends(oauth_schema)]
+    dependencies=[Depends(oauth2_scheme)]
 )
 
 
 @router.post("", response_model=ReviewResponseModel)
-async def create_review(review: ReviewRequestModel, user: User = Depends(get_user_by_token))\
+async def create_review(review: ReviewRequestModel, user: Annotated[User, Depends(get_user_by_token)])\
         -> ReviewResponseModel:
     review_created = ReviewService.create_review(review, user)
     return review_created

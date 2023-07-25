@@ -1,11 +1,11 @@
-from pydantic import BaseModel, validator
+from pydantic import field_validator, ConfigDict, BaseModel
 
 
 class UserRequestModel(BaseModel):
     username: str
     password: str
 
-    @validator('username')
+    @field_validator('username')
     @classmethod
     def validate_username(cls, username: str) -> str:
         if len(username) < 4:
@@ -14,20 +14,16 @@ class UserRequestModel(BaseModel):
             raise ValueError('El username debe tener máximo 50 caracteres')
 
         return username
-
-    class Config:
-        schema_extra = {
-            "example": {
-                "username": 'luis',
-                "password": "luis"
-            }
+    model_config = ConfigDict(json_schema_extra={
+        "example": {
+            "username": 'luis',
+            "password": "luis"
         }
+    })
 
 
 class UserResponseModel(BaseModel):
     id: int
     username: str
     is_activate: bool
-
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
