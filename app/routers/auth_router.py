@@ -1,4 +1,4 @@
-from fastapi import Depends, HTTPException, status
+from fastapi import Depends
 from fastapi.security import OAuth2PasswordRequestForm
 from ..helpers import create_access_token
 from fastapi import APIRouter
