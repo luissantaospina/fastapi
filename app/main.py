@@ -3,10 +3,12 @@ from .routers import user_router, movie_router, user_review_router, auth_router,
 from .middlewares import ErrorHandler
 from fastapi.middleware.cors import CORSMiddleware
 from mangum import Mangum
+from config import settings
+
 
 app = FastAPI()
-app.title = "My first API"
-app.version = "0.0.2"
+app.title = settings.PROJECT_NAME
+app.version = settings.PROJECT_VERSION
 
 app.add_middleware(
     CORSMiddleware,

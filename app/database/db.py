@@ -1,24 +1,17 @@
+from typing import Generator
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from os import getenv
-from dotenv import load_dotenv
 from sqlalchemy.ext.declarative import declarative_base
+from config import settings
 
-load_dotenv()
 
-DATABASE_URL = 'postgresql://{user}:{pss}@{host}:{port}/{db}'.format(
-    user=getenv("PGSQL_USER"),
-    pss=getenv("PGSQL_PASSWORD"),
-    host=getenv("PGSQL_HOST"),
-    port=getenv("PGSQL_PORT"),
-    db=getenv("PGSQL_DATABASE")
-)
+DATABASE_URL = settings.DATABASE_URL
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
 
-def get_db_session():
+def get_db_session() -> Generator:
     db = SessionLocal()
     try:
         yield db
