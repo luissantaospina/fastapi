@@ -6,7 +6,7 @@ services:
     container_name: fastapi
     restart: always
     ports:
-      - '8000:8000'
+      - '8001:8001'
     volumes:
       - .:/app_fast
     networks:
@@ -23,13 +23,13 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=6565
-      - POSTGRES_DB=fastapi
+      - POSTGRES_DB=movie-api
     ports:
-      - "5432:5432"
+      - "5454:5432"
     networks:
       private-net:
         aliases:
-          - local.fast-db
+          - local.movie-db
 
 networks:
   private-net:
