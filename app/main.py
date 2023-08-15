@@ -1,5 +1,5 @@
 from fastapi import FastAPI, APIRouter
-from .routers import user_router, movie_router, user_review_router, auth_router
+from .routers import user_router, movie_router, user_review_router, auth_router, seeder_router
 from .middlewares import ErrorHandler
 from fastapi.middleware.cors import CORSMiddleware
 from mangum import Mangum
@@ -22,6 +22,7 @@ api_v1.include_router(user_router)
 api_v1.include_router(user_review_router)
 api_v1.include_router(movie_router)
 api_v1.include_router(auth_router)
+api_v1.include_router(seeder_router)
 app.include_router(api_v1)
 
 handler = Mangum(app)
