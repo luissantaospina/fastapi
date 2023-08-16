@@ -4,6 +4,8 @@ from fastapi import Depends, HTTPException, status
 from datetime import datetime, timedelta
 from fastapi.security import OAuth2PasswordBearer
 from os import getenv
+from sqlalchemy.orm import Session
+from ..database import get_db
 from ..repositories.users.impl import UserRepositoryImpl
 from dotenv import load_dotenv
 from ..schemas import UserResponseModel
@@ -36,7 +38,7 @@ def encode_token(data: dict):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Unauthorized')
 
 
-def get_user_by_token(token: Annotated[str, Depends(oauth2_scheme)]) -> UserResponseModel:
+def get_user_by_token(token: Annotated[str, Depends(oauth2_scheme)], db: Session = Depends(get_db)) -> UserResponseModel:
     _data = decode_token(token)
-    _user = UserRepositoryImpl().get(_data['user_id'])
+    _user = UserRepositoryImpl().get(_data['user_id'], db)
     return _user

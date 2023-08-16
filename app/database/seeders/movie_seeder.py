@@ -1,7 +1,7 @@
-from app.database import get_db_session
+from app.database import get_db
 from app.models import Movie
 
-db = next(get_db_session())
+db = next(get_db())
 
 
 def seed_movies():

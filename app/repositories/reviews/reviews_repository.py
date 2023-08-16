@@ -1,32 +1,27 @@
+from sqlalchemy.orm import Session
 from ...models import User
 from ...schemas import ReviewRequestModel, ReviewResponseModel, ReviewRequestPutModel
 from typing import List
-from ...database import get_db_session
 from abc import ABC, abstractmethod
-
-db_dependency = next(get_db_session())
 
 
 class ReviewRepository(ABC):
-    def __init__(self):
-        self.db = db_dependency
-
     @abstractmethod
-    def create(self, review: ReviewRequestModel, user: User) -> ReviewResponseModel:
+    def create(self, review: ReviewRequestModel, user: User, db: Session) -> ReviewResponseModel:
         pass
 
     @abstractmethod
-    def get_all(self, page: int = 1, limit: int = 10) -> List[ReviewResponseModel]:
+    def get_all(self, page: int, limit: int, db: Session) -> List[ReviewResponseModel]:
         pass
 
     @abstractmethod
-    def get(self, review_id: int) -> ReviewResponseModel:
+    def get(self, review_id: int, db: Session) -> ReviewResponseModel:
         pass
 
     @abstractmethod
-    def update(self, review_request: ReviewRequestPutModel, review_id: int) -> ReviewResponseModel:
+    def update(self, review_request: ReviewRequestPutModel, review_id: int, db: Session) -> ReviewResponseModel:
         pass
 
     @abstractmethod
-    def delete(self, review_id: int) -> ReviewResponseModel:
+    def delete(self, review_id: int, db: Session) -> ReviewResponseModel:
         pass
